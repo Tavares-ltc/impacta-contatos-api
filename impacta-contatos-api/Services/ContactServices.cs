@@ -41,16 +41,16 @@ namespace impacta_contatos_api.Services
                                                   .ToListAsync();
             return contacts;
         }
-        public async Task<Contact> GetAsync(string contactId) =>
+        public async Task<Contact> GetAsync(ObjectId contactId) =>
             await _contactCollection.Find(contact => contact.Id == contactId).FirstOrDefaultAsync();
 
         public async Task CreateAsync(Contact contactData) =>
             await _contactCollection.InsertOneAsync(contactData);
 
-        public async Task UpdateAsync(string contactId, Contact contactData) =>
+        public async Task UpdateAsync(ObjectId contactId, Contact contactData) =>
             await _contactCollection.ReplaceOneAsync(contact => contact.Id == contactId, contactData);
 
-        public async Task RemoveAsync(string contactId) =>
+        public async Task RemoveAsync(ObjectId contactId) =>
             await _contactCollection.DeleteOneAsync(contact => contact.Id == contactId);
     }
 }

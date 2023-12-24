@@ -60,12 +60,12 @@ BenchmarkDotNet.Artifacts/
 
 # .NET Core
 project.lock.json
+appsettings.Production.json
 project.fragment.lock.json
 artifacts/
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
-
 # StyleCop
 StyleCopReport.xml
 

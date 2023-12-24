@@ -1,13 +1,16 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System;
+using System.Text.Json.Serialization;
 
 namespace impacta_contatos_api.Models
 {
     public class Contact
     {
         [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-        public string? Id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        [JsonIgnore]
+        public ObjectId Id { get; set; }
 
         public required string Name { get; set; }
 
@@ -17,16 +20,18 @@ namespace impacta_contatos_api.Models
 
         public required string Phone { get; set; }
 
-        public required string Image {  get; set; }
+        public required string Image { get; set; }
 
         public required string Description { get; set; }
 
         [BsonElement("createdAt")]
         [BsonDateTimeOptions(Representation = BsonType.DateTime)]
+        [JsonIgnore]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [BsonElement("updatedAt")]
         [BsonDateTimeOptions(Representation = BsonType.DateTime)]
+        [JsonIgnore]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     }

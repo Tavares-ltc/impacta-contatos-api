@@ -1,25 +1,28 @@
 #See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
-WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
-
+# Estágio de construção
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["impacta-contatos-api/impacta-contatos-api.csproj", "impacta-contatos-api/"]
-RUN dotnet restore "./impacta-contatos-api/./impacta-contatos-api.csproj"
-COPY . .
-WORKDIR "/src/impacta-contatos-api"
-RUN dotnet build "./impacta-contatos-api.csproj" -c $BUILD_CONFIGURATION -o /app/build
-
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./impacta-contatos-api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
-
-FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "impacta-contatos-api.dll"]
+
+# Copiando os arquivos do projeto
+COPY . .
+
+# Restaurando as dependências e construindo o projeto
+RUN dotnet restore
+RUN dotnet build -c Debug -o /app/build
+
+# Estágio de execução
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app
+
+# Copiando o resultado da compilação do estágio anterior
+COPY --from=build /app/build .
+
+# Expondo a porta necessária
+EXPOSE 8080
+
+# Definindo a variável de ambiente ASPNETCORE_ENVIRONMENT para Development
+ENV ASPNETCORE_ENVIRONMENT Development
+
+# Iniciando o aplicativo diretamente usando dotnet run
+CMD ["dotnet", "impacta-contatos-api.dll"]
