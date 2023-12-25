@@ -9,8 +9,7 @@ namespace impacta_contatos_api.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        [JsonIgnore]
-        public ObjectId Id { get; set; }
+        public string Id { get; set; }
 
         public required string Name { get; set; }
 
@@ -26,12 +25,10 @@ namespace impacta_contatos_api.Models
 
         [BsonElement("createdAt")]
         [BsonDateTimeOptions(Representation = BsonType.DateTime)]
-        [JsonIgnore]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [BsonElement("updatedAt")]
         [BsonDateTimeOptions(Representation = BsonType.DateTime)]
-        [JsonIgnore]
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     }
