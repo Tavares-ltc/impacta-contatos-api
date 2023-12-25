@@ -5,23 +5,23 @@ using System.Text.Json.Serialization;
 
 namespace impacta_contatos_api.Models
 {
-    public class Contact
+    public class ContactDocument
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string? Id { get; set; } = null;
 
-        public required string Name { get; set; }
+        public string Name { get; set; }
 
-        public required string LegalField { get; set; }
+        public string LegalField { get; set; }
 
-        public required string Email { get; set; }
+        public string Email { get; set; }
 
-        public required string Phone { get; set; }
+        public string Phone { get; set; }
 
-        public required string Image { get; set; }
+        public string Image { get; set; }
 
-        public required string Description { get; set; }
+        public string Description { get; set; }
 
         [BsonElement("createdAt")]
         [BsonDateTimeOptions(Representation = BsonType.DateTime)]

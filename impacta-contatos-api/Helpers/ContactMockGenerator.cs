@@ -15,9 +15,9 @@ namespace impacta_contatos_api.Helpers
             "Delegado",
         };
 
-        public List<Contact> GenerateLegalContacts(int numberOfContacts)
+        public List<ContactDocument> GenerateLegalContacts(int numberOfContacts)
         {
-            var faker = new Faker<Contact>()
+            var faker = new Faker<ContactDocument>()
                 .RuleFor(c => c.Name, f => f.Name.FullName())
                 .RuleFor(c => c.LegalField, f => f.PickRandom(legalFields))
                 .RuleFor(c => c.Email, f => f.Internet.Email())

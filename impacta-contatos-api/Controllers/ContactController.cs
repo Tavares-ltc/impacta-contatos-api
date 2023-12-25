@@ -19,12 +19,12 @@ namespace impacta_contatos_api.Controllers
         }
 
         [HttpGet]
-        public async Task<PagedResponse<Contact>> GetContacts(int pageNumber = 0, int pageSize = 10, string sortOrder = "ascending")
+        public async Task<PagedResponse<ContactDocument>> GetContacts(int pageNumber = 0, int pageSize = 10, string sortOrder = "ascending")
         {
             long count = await _contactServices.CountAsync();
             var contacts = await _contactServices.GetAsync(pageNumber, pageSize, sortOrder);
 
-            var pagedResponse = new PagedResponse<Contact>
+            var pagedResponse = new PagedResponse<ContactDocument>
             {
                 Count = count,
                 Rows = contacts
@@ -34,12 +34,12 @@ namespace impacta_contatos_api.Controllers
         }
 
         [HttpGet("find")]
-        public async Task<PagedResponse<Contact>> GetContactsByField(string field, string value, int pageNumber = 0, int pageSize = 10, string sortOrder = "ascending")
+        public async Task<PagedResponse<ContactDocument>> GetContactsByField(string field, string value, int pageNumber = 0, int pageSize = 10, string sortOrder = "ascending")
         {
             long count = await _contactServices.CountByFieldAsync(field, value);
             var contacts = await _contactServices.FindByFieldAsync(field, value, pageNumber, pageSize, sortOrder);
 
-            var pagedResponse = new PagedResponse<Contact>
+            var pagedResponse = new PagedResponse<ContactDocument>
             {
                 Count = count,
                 Rows = contacts
@@ -49,12 +49,12 @@ namespace impacta_contatos_api.Controllers
         }
 
         [HttpGet("findByDate")]
-        public async Task<PagedResponse<Contact>> GetContactsByDateAsync(DateTime dateTime, int pageNumber = 0, int pageSize = 10, string sortOrder = "ascending")
+        public async Task<PagedResponse<ContactDocument>> GetContactsByDateAsync(DateTime dateTime, int pageNumber = 0, int pageSize = 10, string sortOrder = "ascending")
         {
             long count = await _contactServices.CountByDateAsync(dateTime);
             var contacts = await _contactServices.GetContactsByDateAsync(dateTime, pageNumber, pageSize, sortOrder);
 
-            var pagedResponse = new PagedResponse<Contact>
+            var pagedResponse = new PagedResponse<ContactDocument>
             {
                 Count = count,
                 Rows = contacts
@@ -64,12 +64,12 @@ namespace impacta_contatos_api.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<PagedResponse<Contact>> SearchContacts(string seachString, int pageNumber = 0, int pageSize = 10, string sortOrder = "ascending")
+        public async Task<PagedResponse<ContactDocument>> SearchContacts(string searchString, int pageNumber = 0, int pageSize = 10, string sortOrder = "ascending")
         {
-            long count = await _contactServices.SearchCount(seachString);
-            var contacts = await _contactServices.SearchContactsAsync(seachString, pageNumber, pageSize, sortOrder);
+            long count = await _contactServices.SearchCount(searchString);
+            var contacts = await _contactServices.SearchContactsAsync(searchString, pageNumber, pageSize, sortOrder);
 
-            var pagedResponse = new PagedResponse<Contact>
+            var pagedResponse = new PagedResponse<ContactDocument>
             {
                 Count = count,
                 Rows = contacts
@@ -80,7 +80,7 @@ namespace impacta_contatos_api.Controllers
 
 
         [HttpPost]
-        public async Task<Contact> PostContact(Contact contact)
+        public async Task<ContactDocument> PostContact(ContactDocument contact)
         {
             await _contactServices.CreateAsync(contact);
 
@@ -88,12 +88,12 @@ namespace impacta_contatos_api.Controllers
         }
 
         [HttpPost("mock")]
-        public async Task<List<Contact>> MockContacts(int numberOfContacts = 100)
+        public async Task<List<ContactDocument>> MockContacts(int numberOfContacts = 100)
         {
             var contactGenerator = new ContactMockGenerator();
             var contacts = contactGenerator.GenerateLegalContacts(numberOfContacts);
 
-            var createdContacts = new List<Contact>();
+            var createdContacts = new List<ContactDocument>();
             foreach (var contact in contacts)
             {
                 await _contactServices.CreateAsync(contact);
@@ -104,7 +104,7 @@ namespace impacta_contatos_api.Controllers
         }
 
         [HttpPut]
-        public async Task<Contact> EditContact(Contact contact)
+        public async Task<ContactDocument> EditContact(ContactDocument contact)
         {
             contact.UpdatedAt = DateTime.Now;
             await _contactServices.UpdateAsync(contact);
@@ -113,7 +113,7 @@ namespace impacta_contatos_api.Controllers
         }
 
         [HttpDelete]
-        public async Task<Contact> RemoveContact(string contactId)
+        public async Task<ContactDocument> RemoveContact(string contactId)
         {
             await _contactServices.RemoveAsync(contactId);
 
